@@ -29,8 +29,8 @@ public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Jw
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
-            final String token = (Objects.isNull(AuthHeader) || !AuthHeader.startsWith("Bearer "))
-                    ? "" : AuthHeader.substring(7);
+            final String token = (Objects.isNull(authHeader) || !authHeader.startsWith("Bearer "))
+                    ? "" : authHeader.substring(7);
             return webClient.get()
                     .uri("http://localhost:8080/token/validation")
                     .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
