@@ -13,9 +13,9 @@ import java.util.Objects;
 
 @Component
 public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthGatewayFilterFactory.Config> {
-    private final WebClient webClient;
+    private final  WebClient.Builder webClient;
 
-    public JwtAuthGatewayFilterFactory(WebClient webClient) {
+    public JwtAuthGatewayFilterFactory( WebClient.Builder webClient) {
         super(Config.class);
         this.webClient = webClient;
     }
@@ -31,8 +31,8 @@ public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Jw
             String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
             final String token = (Objects.isNull(authHeader) || !authHeader.startsWith("Bearer "))
                     ? "" : authHeader.substring(7);
-            return webClient.get()
-                    .uri("http://localhost:8080/token/validation")
+            return webClient.build().get()
+                    .uri("lb://user-api/token/validation")
                     .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
                     .exchangeToMono(clientResponse -> {
                         if (clientResponse.statusCode().isError()) {
