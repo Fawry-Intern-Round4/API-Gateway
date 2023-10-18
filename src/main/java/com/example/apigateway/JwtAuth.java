@@ -6,31 +6,30 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<JwtAuthGatewayFilterFactory.Config> {
+public class JwtAuth extends AbstractGatewayFilterFactory<JwtAuth.Config> {
     private final WebClient.Builder webClient;
 
-    public JwtAuthGatewayFilterFactory(WebClient.Builder webClient) {
+    public JwtAuth(WebClient.Builder webClient) {
         super(Config.class);
         this.webClient = webClient;
     }
 
     @Override
     public List<String> shortcutFieldOrder() {
-        return List.of();
+        return Collections.emptyList();
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
-
             String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
             String token;
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -57,8 +56,6 @@ public class JwtAuthGatewayFilterFactory extends AbstractGatewayFilterFactory<Jw
         };
 
     }
-
-    @Validated
     public static class Config {
 
     }
