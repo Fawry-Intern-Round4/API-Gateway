@@ -1,10 +1,3 @@
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka
-server:
-  port: 8080
-
 spring:
   application:
     name: api-gateway
@@ -25,50 +18,50 @@ spring:
       routes:
 #########################User#################################
         - id: user-api-public-0
-          uri: lb://user-api
+          uri: http://user-api
           predicates:
             - Path=/user/**,/token/**
             - Method=OPTIONS
 
         - id: user-api-public-1
-          uri: lb://user-api
+          uri: http://user-api:8080
           predicates:
             - Path=/user/login,/token/**
 
         - id: user-api-private-1
-          uri: lb://user-api
+          uri: http://user-api:8080
           predicates:
             - Path=/user/**
           filters:
             - JwtAuth
 #########################Product#################################
         - id: product-api-public-0
-          uri: lb://product-api
+          uri: http://product-api:8080
           predicates:
             - Path=/product/**
             - Method=OPTIONS
 
         - id: product-api-public-1
-          uri: lb://product-api
+          uri: http://product-api:8080
           predicates:
             - Path=/product/**
             - Method=GET
 
         - id: product-api-private-1
-          uri: lb://product-api
+          uri: http://product-api:8080
           predicates:
             - Path=/product/**
           filters:
             - JwtAuth
 #########################Coupon#################################
         - id: coupon-api-public-0
-          uri: lb://coupon-api
+          uri: http://coupon-api:8080
           predicates:
             - Path=/coupon/**,/consumption/**
             - Method=OPTIONS
 
         - id: coupon-api-private-1
-          uri: lb://coupon-api
+          uri: http://coupon-api:8080
           predicates:
             - Path=/coupon
             - Method=GET
@@ -76,7 +69,7 @@ spring:
             - JwtAuth
 
         - id: coupon-api-private-2
-          uri: lb://coupon-api
+          uri: http://coupon-api:8080
           predicates:
             - Path=/coupon,/coupon/deactivation/**,/coupon/activation/**
             - Method=POST,PUT
@@ -84,32 +77,32 @@ spring:
             - JwtAuth
 
         - id: coupon-api-private-3
-          uri: lb://coupon-api
+          uri: http://coupon-api:8080
           predicates:
             - Path=/consumption/**
           filters:
             - JwtAuth
 
         - id: coupon-api-public
-          uri: lb://coupon-api
+          uri: http://coupon-api:8080
           predicates:
             - Path=/coupon/**,/consumption/**
 #########################Store#################################
         - id: store-api-public-0
-          uri: lb://store-api
+          uri: http://store-api:8080
           predicates:
             - Path=/store/**,/consumption/**,/stock/**
             - Method=OPTIONS
 
         - id: store-api-private-1
-          uri: lb://store-api
+          uri: http://store-api:8080
           predicates:
             - Path=/store/consumption/**
           filters:
             - JwtAuth
 
         - id: store-api-private-2
-          uri: lb://store-api
+          uri: http://store-api:8080
           predicates:
             - Path=/store/**,/consumption/**,/stock/**
             - Method=POST
@@ -117,18 +110,18 @@ spring:
             - JwtAuth
 
         - id: store-api-consume-public-1
-          uri: lb://store-api
+          uri: http://store-api:8080
           predicates:
             - Path=/store/**,/consumption/**,/stock/**
 #########################Order#################################
         - id: order-api-public-0
-          uri: lb://order-api
+          uri: http://order-api:8080
           predicates:
             - Path=/order/**
             - Method=OPTIONS
 
         - id: order-api-private-1
-          uri: lb://order-api
+          uri: http://order-api:8080
           predicates:
             - Path=/order/**
             - Method=GET
@@ -136,6 +129,6 @@ spring:
             - JwtAuth
 
         - id: order-api-public-1
-          uri: lb://order-api
+          uri: http://order-api:8080
           predicates:
             - Path=/order/**

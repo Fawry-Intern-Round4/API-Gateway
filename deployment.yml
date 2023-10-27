@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - name: api-gateway
+        image: amrmousa1682/api-gateway:latest
+        resources:
+          limits:
+            memory: "250Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080

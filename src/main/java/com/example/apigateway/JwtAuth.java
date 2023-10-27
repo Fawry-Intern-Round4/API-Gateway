@@ -38,7 +38,7 @@ public class JwtAuth extends AbstractGatewayFilterFactory<JwtAuth.Config> {
                 token = "";
             }
             return webClient.build().get()
-                    .uri("lb://user-api/token/validation")
+                    .uri("http://user-api:8080/token/validation")
                     .headers(httpHeaders -> httpHeaders.setBearerAuth(token))
                     .exchangeToMono(clientResponse -> {
                         if (clientResponse.statusCode().equals(HttpStatus.OK)) {
